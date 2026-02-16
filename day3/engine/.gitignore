@@ -1,0 +1,28 @@
+build/
+*.o
+*.a
+*.so
+*.exe
+.dashboard.pid
+*.log
+__pycache__/
+*.pyc
+
+# Dependencies / env
+node_modules/
+venv/
+.venv/
+
+# Test / cache
+.pytest_cache/
+
+# Istio / vendor / rr
+istio/
+vendor/
+*.rr
+
+# Secrets (no API keys in repo)
+.env
+.env.*
+*.pem
+secrets/
