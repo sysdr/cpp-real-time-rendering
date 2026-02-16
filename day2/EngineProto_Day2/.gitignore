@@ -1,0 +1,43 @@
+# Build
+build/
+*.o
+*.a
+*.so
+*.exe
+EngineProto
+
+# Runtime
+.dashboard.pid
+*.log
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyc
+venv/
+.venv/
+.pytest_cache/
+
+# Node
+node_modules/
+
+# IDE / OS
+.idea/
+.vscode/
+.DS_Store
+
+# Project artifacts
+istio/
+vendor/
+*.rr
+
+# Secrets / API keys (never commit)
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+secrets/
+**/api_key*
+**/apikey*
+**/*secret*

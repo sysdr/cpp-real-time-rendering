@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 2 — Windowing &amp; OS Abstraction</title>
+    <style>
+        :root {
+            --bg: #f8f9fa;
+            --card: #ffffff;
+            --text: #212529;
+            --text-muted: #6c757d;
+            --accent: #0d6efd;
+            --accent-soft: #e7f1ff;
+            --success: #198754;
+            --warning: #fd7e14;
+            --error: #dc3545;
+            --border: #dee2e6;
+        }
+        body { font-family: system-ui, -apple-system, sans-serif; margin: 0; padding: 2rem; background: var(--bg); color: var(--text); line-height: 1.6; }
+        .container { max-width: 720px; margin: 0 auto; }
+        .badge-day { display: inline-block; background: var(--accent); color: #fff; padding: 0.25rem 0.6rem; border-radius: 6px; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.5rem; }
+        h1 { font-size: 1.5rem; color: var(--text); margin: 0 0 0.35rem 0; }
+        .tagline { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem; }
+        .card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
+        .card h2 { font-size: 1.05rem; color: var(--text); margin: 0 0 0.75rem 0; }
+        .card-desc { color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1rem; }
+        .metrics { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin: 1rem 0; }
+        @media (min-width: 520px) { .metrics { grid-template-columns: repeat(4, 1fr); } }
+        .metric { background: var(--bg); border: 1px solid var(--border); padding: 1rem; border-radius: 8px; }
+        .metric .label { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 0.25rem; }
+        .metric .value { font-size: 1.25rem; font-weight: 700; color: var(--text); }
+        .metric .value.status-ok { color: var(--success); }
+        .metric .value.status-warn { color: var(--warning); }
+        .metric .value.status-err { color: var(--error); }
+        #updated { color: var(--text-muted); font-size: 0.8rem; margin-bottom: 0.5rem; }
+        .output-box { background: #f1f3f4; border: 1px solid var(--border); border-radius: 8px; padding: 1rem; font-family: ui-monospace, monospace; font-size: 0.85rem; min-height: 90px; max-height: 240px; overflow: auto; white-space: pre-wrap; word-break: break-all; color: var(--text); }
+        .output-prompt { color: var(--accent); }
+        .btn-open { margin-top: 0.75rem; padding: 0.6rem 1.2rem; background: var(--accent); color: #fff; border: none; border-radius: 8px; cursor: pointer; font-size: 0.95rem; font-weight: 500; }
+        .btn-open:hover { background: #0b5ed7; }
+        .btn-open:disabled { background: var(--text-muted); cursor: not-allowed; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <span class="badge-day">Day 2 — Windowing &amp; OS Abstraction</span>
+        <h1>GLFW window</h1>
+        <p class="tagline">Create and manage the engine's first visible layer. Track windowing sessions and context status.</p>
+
+        <div class="card">
+            <h2>Windowing stats</h2>
+            <p class="card-desc">Counts for this app only: how often the window was opened and when it was last closed.</p>
+            <p id="updated">Loading...</p>
+            <div class="metrics">
+                <div class="metric">
+                    <div class="label">Windowing sessions</div>
+                    <div class="value" id="run_count">-</div>
+                </div>
+                <div class="metric">
+                    <div class="label">Window created</div>
+                    <div class="value" id="app_runs">-</div>
+                </div>
+                <div class="metric">
+                    <div class="label">Last window closed</div>
+                    <div class="value" id="last_run_ts">-</div>
+                </div>
+                <div class="metric">
+                    <div class="label">Context</div>
+                    <div class="value" id="last_run_status">-</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Open window</h2>
+            <p class="card-desc">Build (if needed) and open the GLFW window. Close the window or press ESC to end the session. Build and runtime output appears below.</p>
+            <div class="output-box" id="terminal-output"><span class="output-prompt">&gt;</span> <span id="terminal-text">Click "Open window" to create the engine window.</span></div>
+            <button type="button" class="btn-open" id="run-demo-btn">Open window</button>
+        </div>
+    </div>
+    <script>
+        var statusLabels = { ok: 'OK', error: 'Error', no_build: 'Not built' };
+        function statusText(raw) { return statusLabels[raw] || raw || '-'; }
+        function statusClass(raw) {
+            if (raw === 'ok') return 'status-ok';
+            if (raw === 'no_build') return 'status-warn';
+            if (raw === 'error') return 'status-err';
+            return '';
+        }
+        function loadMetrics() {
+            fetch('metrics.json?t=' + Date.now()).then(r => r.json()).then(function(d) {
+                document.getElementById('run_count').textContent = d.run_count ?? '-';
+                document.getElementById('app_runs').textContent = d.app_runs ?? '-';
+                document.getElementById('last_run_ts').textContent = d.last_run_ts ? new Date(d.last_run_ts).toLocaleString() : '-';
+                var s = document.getElementById('last_run_status');
+                s.textContent = statusText(d.last_run_status);
+                s.className = 'value ' + statusClass(d.last_run_status);
+                document.getElementById('updated').textContent = 'Updated ' + new Date().toLocaleTimeString();
+            }).catch(function() { document.getElementById('updated').textContent = 'No data yet. Open window once.'; });
+        }
+        loadMetrics();
+        setInterval(loadMetrics, 2000);
+        document.getElementById('run-demo-btn').addEventListener('click', function() {
+            var btn = this, out = document.getElementById('terminal-text');
+            btn.disabled = true;
+            out.textContent = 'Opening window...';
+            document.getElementById('terminal-output').scrollTop = 1e9;
+            fetch('run-demo').then(function(r) { return r.json(); }).then(function(data) {
+                var text = (data.stdout || '') + (data.stderr ? '\n' + data.stderr : '');
+                if (data.returncode !== undefined && data.returncode !== 0 && data.returncode !== -1) text += '\n[exit ' + data.returncode + ']';
+                out.textContent = text || '(no output)';
+                loadMetrics();
+            }).catch(function(e) { out.textContent = 'Request failed: ' + e.message; }).finally(function() { btn.disabled = false; document.getElementById('terminal-output').scrollTop = 1e9; });
+        });
+    </script>
+</body>
+</html>
