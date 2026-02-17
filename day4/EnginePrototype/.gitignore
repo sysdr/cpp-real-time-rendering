@@ -1,0 +1,36 @@
+# Build / binary
+build/
+bin/
+*.o
+*.a
+*.so
+*.exe
+
+# Runtime
+.dashboard.pid
+logs/
+*.log
+
+# Python
+__pycache__/
+*.pyc
+venv/
+.venv/
+.pytest_cache/
+
+# Dependencies
+node_modules/
+
+# Istio / vendor / rr
+istio/
+vendor/
+*.rr
+
+# Secrets / API keys (never commit)
+.env
+.env.*
+*.pem
+secrets/
+**/api_key*
+**/apikey*
+**/*secret*
