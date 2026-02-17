@@ -1,0 +1,51 @@
+# Build
+build/
+bin/
+*.o
+*.a
+*.so
+*.exe
+
+# Dashboard
+.dashboard.pid
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+venv/
+.venv/
+*.egg-info/
+.eggs/
+
+# Node
+node_modules/
+
+# Env / secrets (no API keys in repo)
+.env
+.env.*
+.env.local
+secrets/
+**/api_key*
+**/apikey*
+**/*secret*
+
+# IDE / OS
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Istio / vendor / rr
+Istio/
+istio/
+vendor/
+*.rr
+
+# Misc
+*.log
+*.tmp
+.cache/
