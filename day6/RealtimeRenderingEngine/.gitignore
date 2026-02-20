@@ -1,0 +1,54 @@
+# Build (recreated by start.sh / setup.sh build)
+build/
+*.o
+*.out
+*.exe
+
+# Downloaded libs (recreated by setup.sh: GLAD, GLM)
+libs/
+
+# Dashboard / runtime (recreated when running start.sh)
+.dashboard.pid
+.start_run.log
+.xorg.pid
+metrics.json
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+venv/
+.venv/
+*.egg-info/
+.eggs/
+
+# Node
+node_modules/
+
+# Env / secrets (no API keys in repo)
+.env
+.env.*
+.env.local
+secrets/
+**/api_key*
+**/apikey*
+**/*secret*
+
+# IDE / OS
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Istio / vendor
+Istio/
+istio/
+vendor/
+
+# Misc
+*.log
+*.tmp
+.cache/

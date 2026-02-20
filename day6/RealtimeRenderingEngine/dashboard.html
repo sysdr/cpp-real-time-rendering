@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 6 — Shader Modules Dashboard</title>
+    <style>
+        body { font-family: system-ui, sans-serif; margin: 2rem; background: #f8f9fa; color: #212529; max-width: 900px; }
+        h1 { color: #0d6efd; margin-bottom: 0.25rem; }
+        .subtitle { color: #6c757d; font-size: 0.95rem; margin-bottom: 1.5rem; }
+        .about { background: #fff; border: 1px solid #dee2e6; border-radius: 8px; padding: 1.25rem 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
+        .about h2 { color: #0d6efd; font-size: 1rem; margin: 0 0 0.75rem 0; }
+        .about p { margin: 0 0 0.5rem 0; font-size: 0.9rem; line-height: 1.5; }
+        .about ul { margin: 0.25rem 0 0 1.25rem; padding: 0; font-size: 0.9rem; line-height: 1.6; }
+        .about .row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        @media (max-width: 600px) { .about .row { grid-template-columns: 1fr; } }
+        .metrics { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem; margin: 1rem 0; }
+        .metric { background: #fff; padding: 1rem; border-radius: 8px; border: 1px solid #dee2e6; box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
+        .metric .value { font-size: 1.5rem; font-weight: bold; color: #0d6efd; }
+        .metric .label { color: #6c757d; font-size: 0.9rem; }
+        .status.ok { color: #198754; }
+        .status.error { color: #dc3545; }
+        .status.no_build { color: #fd7e14; }
+        .terminal-box { background: #e9ecef; border: 1px solid #dee2e6; border-radius: 8px; padding: 1rem; font-family: ui-monospace, monospace; font-size: 0.9rem; min-height: 120px; max-height: 320px; overflow: auto; white-space: pre-wrap; }
+        .terminal-btn { margin-top: 0.5rem; padding: 0.5rem 1rem; background: #0d6efd; color: #fff; border: none; border-radius: 6px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>Day 6 — Shader Modules Dashboard</h1>
+    <p class="subtitle">C++ Real-Time Rendering — Vertex &amp; Fragment Shaders</p>
+
+    <section class="about">
+        <h2>About this project</h2>
+        <div class="row">
+            <div>
+                <p><strong>Purpose</strong></p>
+                <p>This is Day 6 of the C++ Real-Time Rendering series. The application is a minimal OpenGL demo that introduces <strong>shader modules</strong>: a vertex shader and a fragment shader that work together to render a triangle with interpolated vertex colors.</p>
+                <p><strong>Goals</strong></p>
+                <ul>
+                    <li>Load and compile GLSL vertex and fragment shaders from files</li>
+                    <li>Pass per-vertex data (position, color) through the pipeline</li>
+                    <li>See color interpolation from vertex to fragment stage</li>
+                    <li>Use VAO/VBO for geometry and a simple Shader class</li>
+                </ul>
+            </div>
+            <div>
+                <p><strong>Workflow</strong></p>
+                <ul>
+                    <li><code>start.sh</code> builds the app, runs the GL demo (window or headless), updates metrics, and starts this dashboard server</li>
+                    <li><code>stop.sh</code> stops the dashboard and any running demo process</li>
+                    <li>Run the demo from here with &quot;Run ./start.sh&quot; or from the project directory</li>
+                </ul>
+                <p><strong>Why</strong></p>
+                <p>Understanding the programmable pipeline (vertex → fragment) is the foundation for real-time rendering. This project keeps the scope small so you can see how shaders connect to C++ and how data flows from CPU to GPU.</p>
+            </div>
+        </div>
+    </section>
+
+    <p id="updated">Loading metrics...</p>
+    <div class="metrics">
+        <div class="metric"><span class="label">Run Count</span><div class="value" id="run_count">-</div></div>
+        <div class="metric"><span class="label">App Runs</span><div class="value" id="app_runs">-</div></div>
+        <div class="metric"><span class="label">Demo Executions</span><div class="value" id="demo_executions">-</div></div>
+        <div class="metric"><span class="label">Last Run</span><div class="value" id="last_run_ts">-</div></div>
+        <div class="metric"><span class="label">Status</span><div class="value status" id="last_run_status">-</div></div>
+    </div>
+    <div class="terminal-section">
+        <h2>Run demo from dashboard</h2>
+        <p style="color: #6c757d; font-size: 0.9rem;">Click to run <code>./start.sh</code>. Metrics update automatically.</p>
+        <div class="terminal-box" id="terminal-output"><span class="terminal-prompt">$ </span><span id="terminal-text">Ready. Click "Run ./start.sh" to execute the demo.</span></div>
+        <button type="button" class="terminal-btn" id="run-demo-btn">Run ./start.sh</button>
+    </div>
+    <script>
+        var statusLabels = { ok: 'OK (app ran successfully)', error: 'Error', no_build: 'Not built — run setup.sh then start.sh' };
+        function statusText(raw) { return statusLabels[raw] || raw || '-'; }
+        function loadMetrics() {
+            fetch('metrics.json?t=' + Date.now()).then(r => r.json()).then(function(d) {
+                document.getElementById('run_count').textContent = d.run_count ?? '-';
+                document.getElementById('app_runs').textContent = d.app_runs ?? '-';
+                document.getElementById('demo_executions').textContent = d.demo_executions ?? '-';
+                document.getElementById('last_run_ts').textContent = d.last_run_ts ? new Date(d.last_run_ts).toLocaleString() : '-';
+                var s = document.getElementById('last_run_status');
+                s.textContent = statusText(d.last_run_status);
+                s.className = 'value status ' + (d.last_run_status === 'ok' ? 'ok' : (d.last_run_status === 'no_build' ? 'no_build' : 'error'));
+                document.getElementById('updated').textContent = 'Last updated: ' + new Date().toLocaleTimeString();
+            }).catch(function() { document.getElementById('updated').textContent = 'Could not load metrics. Run ./start.sh first.'; });
+        }
+        loadMetrics();
+        setInterval(loadMetrics, 2000);
+        document.getElementById('run-demo-btn').addEventListener('click', function() {
+            var btn = this, out = document.getElementById('terminal-text');
+            btn.disabled = true;
+            out.textContent = 'Running ./start.sh ...';
+            fetch('run-demo').then(function(r) { return r.json(); }).then(function(data) {
+                var text = (data.stdout || '') + (data.stderr ? '\n' + data.stderr : '');
+                if (data.returncode !== undefined && data.returncode !== 0 && data.returncode !== -1) text += '\n[exit code ' + data.returncode + ']';
+                out.textContent = text || '(no output)';
+                loadMetrics();
+            }).catch(function(e) { out.textContent = 'Request failed: ' + e.message; }).finally(function() { btn.disabled = false; });
+        });
+    </script>
+</body>
+</html>
