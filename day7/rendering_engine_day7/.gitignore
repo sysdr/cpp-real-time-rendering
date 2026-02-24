@@ -1,0 +1,52 @@
+# Build
+build/
+cmake-build-*/
+*.o
+*.a
+*.so
+*.dylib
+*.exe
+
+# IDE / editor
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Project runtime
+.rendering_engine_day7.pid
+*.pid
+
+# Python (if ever used)
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+*.pyc
+
+# Node (if ever used)
+node_modules/
+
+# Env / secrets (no API keys in repo)
+.env
+.env.*
+!.env.example
+secrets/
+**/api_key*
+**/apikey*
+**/*secret*
+
+# Istio / k8s generated
+Istio/
+istio/
+*.generated.*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
