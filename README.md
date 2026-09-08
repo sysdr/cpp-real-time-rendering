@@ -1,52 +1,107 @@
-## **The Systems Architect’s Guide to Real-Time Rendering: A Comprehensive 90-Day Curriculum in Modern C++**
+# C++ Real-Time Rendering – From Fundamentals to Production Engines
 
-[Check Course Curriculum](https://systemdrd.com/courses/hands-on-ai-agents-course/)
+**3 full lessons from this course are free to read — no signup, no card.** This repository holds the working code for those lessons.
 
-The technological landscape of 2026 presents a unique paradox for the systems engineer. While high-level abstractions and AI-assisted coding have accelerated the delivery of standard application software, the demand for underlying performance in real-time systems has never been more acute. As we push toward photorealistic architectural visualizations, massive-scale digital twins, and ultra-responsive augmented reality interfaces, the abstraction layers that once served us are becoming bottlenecks. This report outlines a professional-grade curriculum for constructing a real-time rendering engine from the ground up, utilizing the modern C++20/23/26 standards and the dual graphics backends of OpenGL and Vulkan.
+[![Free lessons](https://img.shields.io/badge/free_lessons-3-16703E?style=flat-square)](https://systemdrd.com/courses/cpp-real-time-rendering/?utm_source=github&utm_medium=readme&utm_campaign=cpp-real-time-rendering) [![Course](https://img.shields.io/badge/full_course-90_lessons-D92B21?style=flat-square)](https://systemdrd.com/courses/cpp-real-time-rendering/?utm_source=github&utm_medium=readme&utm_campaign=cpp-real-time-rendering) [![Topic](https://img.shields.io/badge/Programming_Languages-informational?style=flat-square)](https://systemdrd.com/courses/cpp-real-time-rendering/?utm_source=github&utm_medium=readme&utm_campaign=cpp-real-time-rendering)
 
-## **The Strategic Imperative: Why Build an Engine in 2026?**
+## Start with the free lessons
 
-In an era dominated by commercial engines like Unreal and Unity, the decision to architect a custom rendering system is a strategic choice focused on control, transparency, and specific performance optimization. For a senior software architect or systems engineer, the value of this course lies not just in the final visual output, but in the mastery of low-level resource management and hardware-software co-design. Modern hardware is increasingly heterogeneous, requiring a deep understanding of how to schedule work across multiple CPU cores and massive GPU execution units.
+Each lesson is the same one a paying subscriber reads — the full text, not a preview. The code for it is in this repository.
 
-Building a rendering engine is the ultimate crucible for a systems programmer. It forces a reconciliation with the physical limits of the machine—memory bandwidth, cache hierarchy, and instruction latency. By the end of this curriculum, the engineer will move from being a consumer of black-box technology to a creator of high-performance platforms capable of rendering millions of primitives with physically based lighting and shadows.
+| | Read the lesson | Code in this repo |
+|---|---|---|
+| **Day 1** | [The Modern Environment](https://systemdrd.com/lessons/system-design-modern-env/?utm_source=github&utm_medium=readme&utm_campaign=cpp-real-time-rendering) | [`day1/`](day1) |
+| **Day 2** | [Windowing and OS Abstraction](https://systemdrd.com/lessons/system-design-windowing-os/?utm_source=github&utm_medium=readme&utm_campaign=cpp-real-time-rendering) | [`day2/`](day2) |
+| **Day 3** | [The High-Precision Game Loop](https://systemdrd.com/lessons/game-loop-architecture/?utm_source=github&utm_medium=readme&utm_campaign=cpp-real-time-rendering) | [`day3/`](day3) |
 
-## **Architectural Vision: What the Student Will Build**
+## The rest of the course — 90 lessons
 
-The capstone of this curriculum is a modular, high-performance rendering engine that leverages the best of both worlds: the conceptual simplicity of OpenGL for rapid prototyping and the explicit, multi-threaded power of Vulkan for production-ready performance. This dual-backend approach is an intentional architectural decision, allowing students to understand the evolution of graphics APIs and the trade-offs inherent in state-machine versus explicit-control designs.
+<details><summary>Full curriculum (90 lessons)</summary>
 
-### **Engine Technical Capabilities**
+- Day 1 : The Modern Environment — **free, above**
+- Day 2: Windowing and OS Abstraction — **free, above**
+- Day 3 : The High-Precision Game Loop — **free, above**
+- Day 4 : Thread-Safe Logging
+- Day 5 : The OpenGL 4.6 Context
+- Day 6 : Shader Modules and GLSL
+- Day 7: Vertex Buffer Objects (VBO)
+- Day 8: Vertex Array Objects (VAO)
+- Day 9: The First Triangle
+- Day 10: Index Buffers and Reuse
+- Day 11: Uniforms and Constant Buffers
+- Day 12: Matrix Transformations – The Silent Architects of Your Virtual Worlds
+- Day 13: Local, World, and Camera Spaces
+- Day 14: Quaternion-Based Rotation
+- Day 15: Input Mapping
+- Day 16: Depth Testing and the Z-Buffer
+- Day 17: Texture Management – The Unsung Hero of Real-Time Performance
+- Day 18: Filtering and Mipmaps – The Silent Architects of Visual Fidelity and Performance
+- Day 19: Alpha Blending and Transparency
+- Day 20: The First Person Camera
+- Day 21: The Phong Lighting Model
+- Day 22: Light Attenuation
+- Day 23: Normal Mapping and Tangent Space
+- Day 24: PBR Foundations
+- Day 25: The Cook-Torrance BRDF
+- Day 26: PBR Material Workflows
+- Day 27: Skyboxes and Cubemaps
+- Day 28: Image-Based Lighting (IBL)
+- Day 29: Offscreen Rendering (FBOs)
+- Day 30: Tone Mapping and HDR
+- Day 31: Vulkan Architecture Overview
+- Day 32: The Vulkan Instance and Debugging
+- Day 33: Physical Device Enumeration
+- Day 34: Logical Devices and Queue Families
+- Day 35: The WSI and Swapchain
+- Day 36: Image Views and Framebuffers
+- Day 37: The Render Pass Declaration
+- Day 38: Shader Modules and SPIR-V
+- Day 39: Pipeline Layouts and Bindings
+- Day 40: The Graphics Pipeline Object (PPO)
+- Day 41: Command Pools and Recording
+- Day 42: Synchronization: Fences and Semaphores
+- Day 43: The Vulkan Triangle
+- Day 44: Frames in Flight
+- Day 45: Swapchain Recreation
+- Day 46: Sub-allocation Strategy
+- Day 47: Vulkan Memory Allocator (VMA)
+- Day 48: Staging Buffers and Transfers
+- Day 49: Descriptor Pools and Sets
+- Day 50: Dynamic Uniform Buffers
+- Day 51: Shader Storage Buffer Objects (SSBO)
+- Day 52: The Asset Pipeline Design
+- Day 53: GLTF 2.0 Ingestion
+- Day 54: The Mesh Abstraction
+- Day 55: Texture Arrays and Samplers
+- Day 56: C++23 Coroutines for I/O
+- Day 57: Asynchronous Texture Streaming
+- Day 58: Material Archetypes
+- Day 59: Basic Shadow Maps
+- Day 60: Percentage Closer Filtering (PCF)
+- Day 61: The Entity-Component System (ECS)
+- Day 62: Data-Oriented Component Storage
+- Day 63: The Scene Graph and Transforms
+- Day 64: CPU-Side Frustum Culling
+- Day 65: GPU-Driven Culling with Compute Shaders
+- Day 66: Multi-Draw Indirect (MDI)
+- Day 67: Bindless Rendering
+- Day 68: The Frame Graph / Render Graph
+- Day 69: Automatic Resource Barrier Generation
+- Day 70: Memory Aliasing and Transient Resources
+- …and 20 more
 
-| Capability | Specification | Architectural Benefit |
-| :---- | :---- | :---- |
-| **Language Standard** | C++23 with C++26 Reflection | Ensures future-proof code with zero-cost abstractions. |
-| **Graphics API 1** | OpenGL 4.6 (Core) | Provides a fast path for debugging and tool development. |
-| **Graphics API 2** | Vulkan 1.3+ | Enables explicit control over GPU memory and synchronization. |
-| **Lighting Model** | Physically Based Rendering (PBR) | Achieves photorealistic visuals via the Cook-Torrance BRDF. |
-| **Shadowing** | Cascaded Shadow Maps & Ray Queries | Handles large-scale outdoor lighting and precise local shadows. |
-| **Memory Strategy** | Custom Arena & Pool Allocators | Minimizes heap fragmentation and maximizes cache locality. |
-| **Scene Management** | Data-Oriented ECS | Handles 100,000+ entities via cache-friendly structures. |
-| **Asset Pipeline** | Async Coroutine Loading | Prevents frame-time spikes during resource streaming. |
+</details>
 
-## **The Target Audience: A Cross-Disciplinary Collective**
+## Get the whole course
 
-This curriculum is designed for a broad spectrum of technical stakeholders, providing nuanced insights that empower each role to contribute to a high-performance system.
+**$199 one-off.** No subscription.
 
-### **For Systems Engineers and Architects**
+- All 90 lessons, written to the same depth as the 3 free ones above
+- The complete source repository, one commit per lesson, beyond the 3 lessons here
+- Every later lesson builds on the code in this repo, so nothing is thrown away
 
-The primary focus for these roles is the construction of a resilient, decoupled architecture. You will learn to design backends that hide the verbosity of Vulkan while exposing its performance benefits to high-level game logic. The curriculum emphasizes the "Frame Graph" concept, a declarative approach to frame construction that automatically manages resource transitions and barriers, reducing the risk of catastrophic driver failures.
+### [Read the free lessons first →](https://systemdrd.com/courses/cpp-real-time-rendering/?utm_source=github&utm_medium=readme&utm_campaign=cpp-real-time-rendering)
 
-### **For Product Managers and Designers**
+---
 
-Product leaders will gain the mental model necessary to make informed trade-off decisions between visual fidelity and engineering speed. Designers will learn the technical constraints of the "Asset Pipeline," understanding why a specific mesh layout or texture format is critical for maintaining 60 frames per second on target hardware.
-
-### **For SREs and DevOps Engineers**
-
-The course provides a deep dive into the modern graphics CI/CD pipeline. You will learn how to automate shader validation across different GPU vendors and how to implement "metamorphic testing" to catch silent rendering bugs in graphics drivers before they reach production.
-
-## **Foundations: Prerequisites and Modern C++**
-
-Before the 90-day coding sprint begins, a baseline of technical proficiency is required. The engine relies on the C++23 standard, which introduces significant improvements in asynchronous programming and library support.
-
-### **Mathematical Intuition over Raw Formulas**
-
-Real-time graphics is essentially the application of linear algebra in four dimensions. The curriculum prioritizes intuition. For instance, the dot product is not just a formula, it is a geometric tool for projection and measuring the cosine of the angle between light and a surface normal. This understanding is critical for calculating Lambertian diffuse lighting.
+Part of [SystemDR](https://systemdrd.com/courses/?utm_source=github&utm_medium=readme&utm_campaign=cpp-real-time-rendering) — hands-on engineering courses where you build the system, break it, and fix it. [All courses](https://systemdrd.com/courses/?utm_source=github&utm_medium=readme&utm_campaign=cpp-real-time-rendering) · [Free lessons across every course](https://systemdrd.com/trial-lessons/?utm_source=github&utm_medium=readme&utm_campaign=cpp-real-time-rendering)
